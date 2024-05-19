@@ -1,0 +1,6 @@
+streamlit
+openpyxl
+pandas
+ipython
+pivottablejs
+pygwalker
