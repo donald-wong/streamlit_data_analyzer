@@ -14,24 +14,28 @@ st.title("Data Analyzer")
 st.sidebar.subheader("Setting")
 uploaded_file = st.sidebar.file_uploader(label="Upload your CSV or Excel file.",type=['csv','xlsx'])
 
-global df
+df = pd.DataFrame()
 if uploaded_file is not None:
     try:
         df = pd.read_csv(uploaded_file)
     except Exception as e:
         df = pd.read_excel(uploaded_file)
 
-try:
-    #st.write(df)
 
-    st.subheader("Pivot Table")
-    t = pivot_ui(df)
-    with open(t.src) as t:
-        components.html(t.read(), None, height=1000, scrolling=True)
+if not df.empty:
+    try:
+        #st.write(df)
 
-    st.subheader('Visualizer')
-    p = StreamlitRenderer(df)
-    p.explorer()
+        st.subheader("Pivot Table")
+        t = pivot_ui(df)
+        with open(t.src) as t:
+            components.html(t.read(), None, height=1000, scrolling=True)
 
-except Exception as e:
+        st.subheader('Visualizer')
+        p = StreamlitRenderer(df)
+        p.explorer()
+
+    except Exception as e:
+        st.write('Exception: %s', repr(e))
+else:
     st.write("Please upload a file...")
